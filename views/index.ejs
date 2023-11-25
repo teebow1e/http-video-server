@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Streaming With Node</title>
+  <style>
+    body {
+      max-width: 100%;
+      height: 100vh;
+      background-color: white;
+      display: flex;
+      margin: auto;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Select a Video to Play</h1>
+
+  <form action="/video" method="get">
+    <label for="videoSelect">Choose a video:</label>
+    <select id="videoSelect" name="videoPath">
+      <% for (let i = 0; i < videoFiles.length; i++) { %>
+        <option value="<%= videoFiles[i] %>"><%= videoFiles[i] %></option>
+      <% } %>
+    </select>
+    <button type="submit">Play Video</button>
+  </form>
+
+  <video id="videoPlayer" width="70%" controls autoplay muted="false">
+    <source id="videoSource" type="video/mp4" />
+  </video>
+
+  <script>
+    document.getElementById('videoSelect').addEventListener('change', function() {
+      const selectedVideo = this.value;
+      const videoPlayer = document.getElementById('videoPlayer');
+      const videoSource = document.getElementById('videoSource');
+
+      videoSource.src = '/video?videoPath=' + encodeURIComponent(selectedVideo);
+      videoPlayer.load();
+      videoPlayer.play();
+    });
+  </script>
+</body>
+</html>
